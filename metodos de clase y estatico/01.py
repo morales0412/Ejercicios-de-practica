@@ -1,5 +1,6 @@
 class UserValidator:
     caracteres_especiales = {"@", "#", "$", "%", "&", "*"}
+
     @staticmethod
     def validate_password(password):
         if len(password) < 10:
@@ -12,6 +13,3 @@ class UserValidator:
             print("La contraseña debe tener al menos un caracter especial")
             return False
         return True
-
-
-
