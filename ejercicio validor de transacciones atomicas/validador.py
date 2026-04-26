@@ -53,3 +53,28 @@ class Cuenta:
     @property
     def saldo(self):
         return self._saldo
+
+    def restar_saldo(self, monto):
+        self._saldo -= monto
+
+    def __str__(self):
+        return f"Cuenta: {self.titular}, Saldo: {self.saldo}, Estado: {self.estado}"
+
+
+class Procesador:
+    def __init__(self, reglas):
+        self.reglas = reglas
+
+    def ejecutar_transaccion(self, cuenta, monto):
+        for regla in self.reglas:
+            regla.validar(cuenta, monto)
+        cuenta.restar_saldo(monto)
+
+
+reglas = [ReglaSaldo(), ReglaEstado()]
+procesador = Procesador(reglas)
+cuenta = Cuenta("Juan", 1000)
+try:
+    procesador.ejecutar_transaccion(cuenta, 1500)
+except ValidationError as e:
+    print(f"Error en la transaccion: {e.mensaje}")
