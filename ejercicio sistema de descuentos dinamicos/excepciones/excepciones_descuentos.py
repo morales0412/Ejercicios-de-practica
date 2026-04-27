@@ -15,7 +15,7 @@ class ExpiredCouponError(DiscountError):
 class NegativePriceError(DiscountError):
     def __init__(self, valor_calculado):
         self.valor_calculado = valor_calculado
-        mensaje = f"El valor final es negativo: {self.valor_calculado}"
+        mensaje = f"El valor  es negativo: {self.valor_calculado}"
         super().__init__(mensaje)
 
 
