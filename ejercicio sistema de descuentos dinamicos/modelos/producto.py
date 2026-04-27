@@ -28,3 +28,15 @@ class Producto:
 
     def __str__(self):
         return f"{self.nombre}-{self.categoria}-${self.precio_base}-EAN13:{self.ean13}"
+
+    @property
+    def nombre(self):
+        return self._nombre
+
+    @property
+    def categoria(self):
+        return self._categoria
+
+    @property
+    def ean13(self):
+        return self._ean13
