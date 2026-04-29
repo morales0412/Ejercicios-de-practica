@@ -2,8 +2,9 @@ from .base import SuscripcionException
 
 
 class NivelAccesoInvalido(SuscripcionException):
-    def __init__(self):
-        mensaje = "El nivel de acceso no es valido."
+    def __init__(self, estado):
+        self.estado = estado
+        mensaje = f"El nivel de acceso {self.estado} no es valido."
         super().__init__(mensaje)
 
 
