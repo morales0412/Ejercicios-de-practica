@@ -11,9 +11,9 @@ class StockInsuficienteError(InventarioException):
 
 
 class ProductoNoEncontradoError(InventarioException):
-    def __init__(self, producto):
-        self.producto = producto
-        mensaje = f"Producto '{producto} no encontrado en el inventario"
+    def __init__(self, id_producto):
+        self.id_producto = id_producto
+        mensaje = f"Producto con ID {id_producto} no encontrado en el inventario"
         super().__init__(mensaje)
 
 
