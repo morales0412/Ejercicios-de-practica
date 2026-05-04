@@ -35,3 +35,6 @@ class Item:
     def verificar_requesito_nivel(self, personaje):
         if personaje.nivel < self.nivel_requerido:
             raise RequisitoNivelError(personaje.nombre, self.nivel_requerido)
+
+    def __str__(self):
+        return f"{self.nombre} - Durabilidad: {self.durabilidad}, Nivel Requerido: {self.nivel_requerido}"

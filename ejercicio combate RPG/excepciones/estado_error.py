@@ -14,7 +14,7 @@ class PersonajeAturdidoError(RestrinccionEstadoError):
         super().__init__(mensaje)
 
 
-class HechizosSilenciadoError(RestrinccionEstadoError):
+class HechizoSilenciadoError(RestrinccionEstadoError):
     def __init__(self, nombre_personaje):
         self.nombre_personaje = nombre_personaje
         mensaje = f"{self.nombre_personaje} esta silenciado y no puede lanzar hechizos"
