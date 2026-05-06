@@ -1,3 +1,3 @@
-class MobaError(Exception):
+class AccionInvalidaError(Exception):
     def __init__(self, mensaje):
         super().__init__(mensaje)
