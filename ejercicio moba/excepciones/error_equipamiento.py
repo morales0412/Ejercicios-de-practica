@@ -11,3 +11,10 @@ class LimiteEquipamientoError(ErrorEquipamiento):
         self.item_nombre = item_nombre
         mensaje = f"No se puede equipar '{item_nombre}'. El limite de items equipados es {self.limite}."
         super().__init__(mensaje)
+
+
+class ItemNoEncontradoError(ErrorEquipamiento):
+    def __init__(self, item_nombre):
+        self.item_nombre = item_nombre
+        mensaje = f"Item '{self.item_nombre}' no encontrado en el inventario."
+        super().__init__(mensaje)

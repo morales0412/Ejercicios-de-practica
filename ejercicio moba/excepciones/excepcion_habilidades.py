@@ -6,10 +6,12 @@ class ErrorHabilidad(AccionInvalidaError):
 
 
 class HabilidadEnCooldownError(ErrorHabilidad):
-    def __init__(self, habilidad_nombre, cooldown_restante):
+    def __init__(self, habilidad_nombre, enfriamiento_base, enfriamiento):
         self.habilidad_nombre = habilidad_nombre
-        self.cooldwon_restante = cooldown_restante
-        mensaje = f"Habilidad '{habilidad_nombre}' en cooldown. Tiempo restante: {cooldown_restante} segundos."
+        self.enfriamiento_base = enfriamiento_base
+        self.enfriamiento = enfriamiento
+        enfriamiento_restante = self.enfriamiento_base - self.enfriamiento
+        mensaje = f"Habilidad '{habilidad_nombre}' en cooldown. Turnos restante: {enfriamiento_restante}."
         super().__init__(mensaje)
 
 

@@ -1,87 +1,101 @@
 from abc import ABC, abstractmethod
 
-
-from abc import ABC
+from excepciones.excepcion_habilidades import (
+    HabilidadEnCooldownError,
+    HabilidadBloqueadaError,
+)
+from excepciones.error_equipamiento import (
+    LimiteEquipamientoError,
+    ItemNoEncontradoError,
+)
+from excepciones.excepcion_recursos import ManaInsuficienteError
 
 
 class Personaje(ABC):
-    def __init__(self, nombre, tipo):
-
+    def __init__(self, nombre, tipo, stats):
         self.nombre = nombre
         self.tipo = tipo
-
         self.nivel = 1
         self.experiencia = 0
-
-        self._vida = 0
-        self._vida_max = 0
-
-        self._mana = 0
-        self._mana_max = 0
-
-        self.daño_fisico = 0
-        self.daño_magico = 0
-
-        self.armadura = 0
-        self.resistencia_magica = 0
-
         self.oro = 0
-        self.experiencia_al_matarlo = 0
-
-        self.items = []
+        self.stats = stats
+        self.mana_actual = self.stats["mana"]
+        self.vida_actual = self.stats["vida"]
         self.habilidades = []
+        self.items = []
 
-    @property
-    def vida(self):
-        return self._vida
+    def calcular_daño_recibido(self, cantidad, tipo_daño):
+        if tipo_daño == "fisico":
+            resistencia = self.stats.get("resistencia_fisica", 0)
+        elif tipo_daño == "magico":
+            resistencia = self.stats.get("resistencia_magica", 0)
+        daño_reducido = cantidad - (cantidad * resistencia / 100)
+        self.vida_actual -= max(daño_reducido, 0)
+        if self.vida_actual < 0:
+            self.vida_actual = 0
 
-    @vida.setter
-    def vida(self, valor):
-
-        if valor < 0:
-            self._vida = 0
-        elif valor > self._vida_max:
-            self._vida = self._vida_max
-        else:
-            self._vida = valor
-
-    @property
-    def mana(self):
-        return self._mana
-
-    @mana.setter
-    def mana(self, valor):
-        if valor < 0:
-            self._mana = 0
-        elif valor > self._mana_max:
-            self._mana = self._mana_max
-        else:
-            self._mana = valor
-
-    def calcular_daño_recibido(self, cantidad, tipo):
-        if tipo == "fisico":
-            daño_real = max(cantidad - self.armadura, 0)
-        elif tipo == "magico":
-            daño_real = max(cantidad - self.resistencia_magica, 0)
-        self.vida -= daño_real
-        return daño_real
+    def usar_habilidad(self, habilidad):
+        if habilidad.enfriamiento > 0:
+            raise HabilidadEnCooldownError(
+                habilidad.nombre, habilidad.enfriamiento_base, habilidad.enfriamiento
+            )
+        if self.nivel < habilidad.nivel_requerido:
+            raise HabilidadBloqueadaError(habilidad.nivel_requerido)
+        if self.mana_actual < habilidad.costo_mana:
+            raise ManaInsuficienteError(self.mana_actual, habilidad.costo_mana)
+        self.mana_actual -= habilidad.costo_mana
+        habilidad.enfriamiento = habilidad.enfriamiento_base
 
     def ganar_experiencia(self, cantidad):
         self.experiencia += cantidad
+        while self.verificar_subida_nivel():
+            self.subir_nivel()
 
-    def verificar_subir_nivel(self):
-        exp_necesaria = self.nivel * 100
-        if self.experiencia >= exp_necesaria:
-            return True
-        return False
+    def verificar_subida_nivel(self):
+        experiencia_requerida = self.nivel * 100
+        return self.experiencia >= experiencia_requerida
+
+    def subir_nivel(self):
+        self.nivel += 1
+        self.aumentar_stats_nivel()
+        self.vida_actual = self.stats["vida"]
+        self.mana_actual = self.stats["mana"]
 
     @abstractmethod
-    def subir_nivel(self):
+    def aumentar_stats_nivel(self):
         pass
 
-    def usar_habilidad(self, habilidad):
-        if habilidad in self.habilidades:
-            if self.mana >= habilidad.costo_mana and habilidad.enfriamiento == 0:
-                self.mana -= habilidad.costo_mana
-                return True
-            return False
+    def equipar_item(self, item):
+        if len(self.items) >= 6:
+            raise LimiteEquipamientoError(item.nombre)
+        self.items.append(item)
+        self.sumar_stats_item(item.stats)
+
+        if self.vida_actual > self.stats["vida"]:
+            self.vida_actual = self.stats["vida"]
+
+        if self.mana_actual > self.stats["mana"]:
+            self.mana_actual = self.stats["mana"]
+
+    def sumar_stats_item(self, stats_item):
+        for stat_item, valor_item in stats_item.items():
+            if stat_item in self.stats:
+                self.stats[stat_item] += valor_item
+
+    def desequipar_item(self, item_nombre):
+        item = next((item for item in self.items if item.nombre == item_nombre), None)
+        if not item:
+            raise ItemNoEncontradoError(item_nombre)
+        self.items.remove(item)
+        self.quitar_stats_item(item.stats)
+
+        if self.vida_actual > self.stats["vida"]:
+            self.vida_actual = self.stats["vida"]
+
+        if self.mana_actual > self.stats["mana"]:
+            self.mana_actual = self.stats["mana"]
+
+    def quitar_stats_item(self, stats_item):
+        for stat_item, valor_item in stats_item.items():
+            if stat_item in self.stats:
+                self.stats[stat_item] -= valor_item
