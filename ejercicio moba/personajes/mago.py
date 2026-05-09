@@ -10,5 +10,5 @@ class Mago(Personaje):
         self.stats["mana"] += 30
         self.stats["daño_fisico"] += 5
         self.stats["daño_magico"] += 20
-        self.stats["resistencia_fisica"] += 2
+        self.stats["resistencia_fisica"] += 6
         self.stats["resistencia_magica"] += 5
