@@ -99,3 +99,6 @@ class Personaje(ABC):
         for stat_item, valor_item in stats_item.items():
             if stat_item in self.stats:
                 self.stats[stat_item] -= valor_item
+
+    def __str__(self):
+        return f"{self.nombre} (Nivel {self.nivel} {self.tipo}) - Vida: {self.vida_actual}/{self.stats['vida']}, Mana: {self.mana_actual}/{self.stats['mana']}"
