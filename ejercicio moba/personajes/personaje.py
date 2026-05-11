@@ -1,14 +1,10 @@
 from abc import ABC, abstractmethod
 
-from excepciones.excepcion_habilidades import (
-    HabilidadEnCooldownError,
-    HabilidadBloqueadaError,
-)
+
 from excepciones.error_equipamiento import (
     LimiteEquipamientoError,
     ItemNoEncontradoError,
 )
-from excepciones.excepcion_recursos import ManaInsuficienteError
 
 
 class Personaje(ABC):
@@ -24,7 +20,7 @@ class Personaje(ABC):
         self.habilidades = []
         self.items = []
 
-    def calcular_daño_recibido(self, cantidad, tipo_daño):
+    def recibir_daño(self, cantidad, tipo_daño):
         if tipo_daño == "fisico":
             resistencia = self.stats.get("resistencia_fisica", 0)
         elif tipo_daño == "magico":
@@ -34,17 +30,9 @@ class Personaje(ABC):
         if self.vida_actual < 0:
             self.vida_actual = 0
 
-    def usar_habilidad(self, habilidad):
-        if habilidad.enfriamiento > 0:
-            raise HabilidadEnCooldownError(
-                habilidad.nombre, habilidad.enfriamiento_base, habilidad.enfriamiento
-            )
-        if self.nivel < habilidad.nivel_requerido:
-            raise HabilidadBloqueadaError(habilidad.nivel_requerido)
-        if self.mana_actual < habilidad.costo_mana:
-            raise ManaInsuficienteError(self.mana_actual, habilidad.costo_mana)
-        self.mana_actual -= habilidad.costo_mana
-        habilidad.enfriamiento = habilidad.enfriamiento_base
+    def atacar(self, objetivo, habilidad):
+        daño, tipo_daño = habilidad.usar(self)
+        objetivo.recibir_daño(daño, tipo_daño)
 
     def ganar_experiencia(self, cantidad):
         self.experiencia += cantidad
@@ -56,6 +44,8 @@ class Personaje(ABC):
         return self.experiencia >= experiencia_requerida
 
     def subir_nivel(self):
+        experiencia_requerida = self.nivel * 100
+        self.experiencia -= experiencia_requerida
         self.nivel += 1
         self.aumentar_stats_nivel()
         self.vida_actual = self.stats["vida"]
