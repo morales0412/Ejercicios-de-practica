@@ -10,7 +10,7 @@ class HabilidadEnCooldownError(ErrorHabilidad):
         self.habilidad_nombre = habilidad_nombre
         self.enfriamiento_base = enfriamiento_base
         self.enfriamiento = enfriamiento
-        enfriamiento_restante = self.enfriamiento_base - self.enfriamiento
+        enfriamiento_restante = self.enfriamiento
         mensaje = f"Habilidad '{habilidad_nombre}' en cooldown. Turnos restante: {enfriamiento_restante}."
         super().__init__(mensaje)
 

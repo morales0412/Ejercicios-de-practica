@@ -51,6 +51,12 @@ class Personaje(ABC):
         self.vida_actual = self.stats["vida"]
         self.mana_actual = self.stats["mana"]
 
+    def restaurar_combate(self):
+        self.vida_actual = self.stats["vida"]
+        self.mana_actual = self.stats["mana"]
+        for habilidad in self.habilidades:
+            habilidad.enfriamiento_actual = 0
+
     @abstractmethod
     def aumentar_stats_nivel(self):
         pass
@@ -59,7 +65,7 @@ class Personaje(ABC):
         if len(self.items) >= 6:
             raise LimiteEquipamientoError(item.nombre)
         self.items.append(item)
-        self.sumar_stats_item(item.stats)
+        self.sumar_stats_item(item.bonificaciones)
 
         if self.vida_actual > self.stats["vida"]:
             self.vida_actual = self.stats["vida"]
@@ -77,7 +83,7 @@ class Personaje(ABC):
         if not item:
             raise ItemNoEncontradoError(item_nombre)
         self.items.remove(item)
-        self.quitar_stats_item(item.stats)
+        self.quitar_stats_item(item.bonificaciones)
 
         if self.vida_actual > self.stats["vida"]:
             self.vida_actual = self.stats["vida"]

@@ -35,15 +35,13 @@ class Habilidad:
 
     def puede_usar(self, personaje):
         if personaje.nivel < self.nivel_requerido:
-            raise HabilidadBloqueadaError(
-                self.nombre, self.nivel_requerido, personaje.nivel
-            )
+            raise HabilidadBloqueadaError(self.nivel_requerido)
         if personaje.mana_actual < self.costo_mana:
-            raise ManaInsuficienteError(
-                self.nombre, self.costo_mana, personaje.mana_actual
-            )
+            raise ManaInsuficienteError(personaje.mana_actual, self.costo_mana)
         if self.enfriamiento_actual > 0:
-            raise HabilidadEnCooldownError(self.nombre, self.enfriamiento_actual)
+            raise HabilidadEnCooldownError(
+                self.nombre, self.enfriamiento, self.enfriamiento_actual
+            )
 
     def usar(self, personaje):
         self.puede_usar(personaje)
