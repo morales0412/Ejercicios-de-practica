@@ -1,5 +1,7 @@
 from math import pi
 
+UNIDAD_LONGITUD = "cm"
+
 while True:
     print("\n--- Menú de opciones cálculo de área y perímetro ---")
     print("1. Triángulo")
@@ -25,11 +27,21 @@ while True:
     if opcion == 1:
         while True:
             try:
-                base = float(input("Ingrese la base del triángulo: "))
-                altura = float(input("Ingrese la altura del triángulo: "))
-                lado_1 = float(input("Ingrese el lado 1 del triángulo: "))
-                lado_2 = float(input("Ingrese el lado 2 del triángulo: "))
-                lado_3 = float(input("Ingrese el lado 3 del triángulo: "))
+                base = float(
+                    input(f"Ingrese la base del triángulo ({UNIDAD_LONGITUD}): ")
+                )
+                altura = float(
+                    input(f"Ingrese la altura del triángulo ({UNIDAD_LONGITUD}): ")
+                )
+                lado_1 = float(
+                    input(f"Ingrese el lado 1 del triángulo ({UNIDAD_LONGITUD}): ")
+                )
+                lado_2 = float(
+                    input(f"Ingrese el lado 2 del triángulo ({UNIDAD_LONGITUD}): ")
+                )
+                lado_3 = float(
+                    input(f"Ingrese el lado 3 del triángulo ({UNIDAD_LONGITUD}): ")
+                )
 
                 if base <= 0 or altura <= 0:
                     print("La base y la altura deben ser mayores que 0")
@@ -56,15 +68,19 @@ while True:
         area = (base * altura) / 2
         perimetro = lado_1 + lado_2 + lado_3
 
-        print(f"El área del triángulo es: {area}")
-        print(f"El perímetro del triángulo es: {perimetro}")
+        print(f"El área del triángulo es: {area} cm²")
+        print(f"El perímetro del triángulo es: {perimetro} {UNIDAD_LONGITUD}")
 
     # RECTÁNGULO
     elif opcion == 2:
         while True:
             try:
-                base = float(input("Ingrese la base del rectángulo: "))
-                altura = float(input("Ingrese la altura del rectángulo: "))
+                base = float(
+                    input(f"Ingrese la base del rectángulo ({UNIDAD_LONGITUD}): ")
+                )
+                altura = float(
+                    input(f"Ingrese la altura del rectángulo ({UNIDAD_LONGITUD}): ")
+                )
 
                 if base <= 0 or altura <= 0:
                     print("Las medidas deben ser mayores que 0")
@@ -77,14 +93,16 @@ while True:
         area = base * altura
         perimetro = 2 * (base + altura)
 
-        print(f"El área del rectángulo es: {area}")
-        print(f"El perímetro del rectángulo es: {perimetro}")
+        print(f"El área del rectángulo es: {area} cm²")
+        print(f"El perímetro del rectángulo es: {perimetro} {UNIDAD_LONGITUD}")
 
     # CUADRADO
     elif opcion == 3:
         while True:
             try:
-                lado = float(input("Ingrese el lado del cuadrado: "))
+                lado = float(
+                    input(f"Ingrese el lado del cuadrado ({UNIDAD_LONGITUD}): ")
+                )
 
                 if lado <= 0:
                     print("La medida debe ser mayor que 0")
@@ -97,14 +115,16 @@ while True:
         area = lado**2
         perimetro = 4 * lado
 
-        print(f"El área del cuadrado es: {area}")
-        print(f"El perímetro del cuadrado es: {perimetro}")
+        print(f"El área del cuadrado es: {area} cm²")
+        print(f"El perímetro del cuadrado es: {perimetro} {UNIDAD_LONGITUD}")
 
     # CÍRCULO
     elif opcion == 4:
         while True:
             try:
-                radio = float(input("Ingrese el radio del círculo: "))
+                radio = float(
+                    input(f"Ingrese el radio del círculo ({UNIDAD_LONGITUD}): ")
+                )
 
                 if radio <= 0:
                     print("El radio debe ser mayor que 0")
@@ -117,8 +137,8 @@ while True:
         area = pi * radio**2
         perimetro = 2 * pi * radio
 
-        print(f"El área del círculo es: {area}")
-        print(f"El perímetro del círculo es: {perimetro}")
+        print(f"El área del círculo es: {area} cm²")
+        print(f"El perímetro del círculo es: {perimetro} {UNIDAD_LONGITUD}")
 
     # SALIR
     elif opcion == 5:
