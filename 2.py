@@ -1,3 +1,20 @@
-lista = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-cuadrado = [x**2 for x in lista]
-print(cuadrado)
+from abc import ABC, abstractmethod
+
+
+class Persona(ABC):
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+
+    @abstractmethod
+    def presentarse(self):
+        pass
+
+
+class Estudiante(Persona):
+    def presentarse(self):
+        print(f"Hola, soy {self.nombre} y tengo {self.edad} años. Soy estudiante.")
+
+
+estudiante = Estudiante("Juan", 20)
+estudiante.presentarse()
