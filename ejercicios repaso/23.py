@@ -64,9 +64,9 @@ while True:
         try:
             tarea = TareaSimple(nombre, prioridad)
             print(f"Tarea simple '{nombre}' creada con prioridad '{prioridad}'.")
+            tareas.append(tarea)
         except ValueError as e:
             print(e)
-        tareas.append(tarea)
     elif opcion == "2":
         nombre = input("Ingrese el nombre de la tarea: ")
         prioridad = input("Ingrese la prioridad (alta, media, baja): ").lower().strip()
@@ -84,9 +84,9 @@ while True:
             print(
                 f"Tarea recurrente '{nombre}' creada con prioridad '{prioridad}' y {repeticiones} repeticiones."
             )
+            tareas.append(tarea)
         except ValueError as e:
             print(e)
-        tareas.append(tarea)
     elif opcion == "3":
         if not tareas:
             print("No hay tareas registradas.")
