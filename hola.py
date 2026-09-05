@@ -1,21 +1,22 @@
-calificaciones = {
-    "matematicas": [4, 5, 3, 2],
-    "historia": [2, 3, 4],
-    "ingles": [3, 4, 5],
-    "biologia": [5, 4, 3],
-    "quimica": [4, 5, 5, 4],
-}
-numeros = [1, 2, 3, 4, 5]
+ventas = [
+    {"vendedor": "Ana", "monto": 5000000},
+    {"vendedor": "Luis", "monto": 3000000},
+    {"vendedor": "Ana", "monto": 7000000},
+]
 
-aprobadas = list(
-    filter(
-        lambda materia: (
-            sum(calificaciones[materia]) / len(calificaciones[materia]) >= 3
-        ),
-        calificaciones,
-    )
+promedio = sum(venta["monto"] for venta in ventas) / len(ventas)
+
+
+usuarios_mayores_promedio = list(
+    filter(lambda venta: venta["monto"] > promedio, ventas)
 )
-print(aprobadas)
+print(usuarios_mayores_promedio)
 
-for materia in calificaciones:
-    print(materia)
+
+nombres = [("Andres", 25), ("Maria", 30), ("Juan", 20)]
+edad_promedio = sum(edad[1] for edad in nombres) / len(nombres)
+
+print(f"Edad promedio: {edad_promedio}")
+
+mayores = list(filter(lambda persona: persona[1] > edad_promedio, nombres))
+print(f"Personas mayores que la edad promedio: {mayores}")
